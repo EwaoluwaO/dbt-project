@@ -13,9 +13,9 @@ WITH
       MIN(o.created_at) AS first_order_date,
       MAX(o.created_at) AS last_order_date
     FROM
-      {{ source('thelook_ecommerce', 'orders') }} o  -- Use source function
-      JOIN {{ source('thelook_ecommerce', 'users') }} u ON o.user_id = u.id
-      JOIN {{ source('thelook_ecommerce', 'order_items') }} oi ON o.order_id = oi.order_id
+      {{ ref("stg_orders") }} o  -- Use source function
+      JOIN {{ ref("stg_users") }} u ON o.user_id = u.id
+      JOIN {{ ref("stg_order_items") }} oi ON o.order_id = oi.order_id
     GROUP BY
       o.user_id,
       u.first_name,

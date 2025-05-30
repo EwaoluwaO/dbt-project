@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+) }}
+
 SELECT
   DATE(o.created_at) AS order_date,
   COUNT(DISTINCT o.order_id) AS orders_count,
@@ -14,8 +18,8 @@ SELECT
   SUM(oi.sale_price) AS total_sales_amount,
   SUM(oi.sale_price) / COUNT(DISTINCT o.order_id) AS average_order_value
 FROM
-  {{ source('thelook_ecommerce', 'orders') }} o
-  JOIN {{ source('thelook_ecommerce', 'order_items') }} oi ON o.order_id = oi.order_id
+  {{ ref('stg_orders') }} o
+  JOIN {{ ref('stg_order_items') }} oi ON o.order_id = oi.order_id
 GROUP BY
   order_date
 ORDER BY

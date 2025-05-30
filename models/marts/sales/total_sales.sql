@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+) }}
+
 SELECT
   p.id AS product_id,
   p.category,
@@ -8,8 +12,8 @@ SELECT
   SUM(oi.sale_price) AS total_sales,
   SUM(oi.sale_price - p.cost) AS total_profit
 FROM
-  {{ source('thelook_ecommerce', 'products') }} AS p
-  JOIN {{ source('thelook_ecommerce', 'order_items') }} AS oi ON p.id = oi.product_id
+  {{ ref('stg_products') }} AS p
+  JOIN {{ ref('stg_order_items') }} AS oi ON p.id = oi.product_id
 GROUP BY
   p.id,
   p.name,

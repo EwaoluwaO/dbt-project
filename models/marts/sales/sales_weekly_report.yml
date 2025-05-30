@@ -1,0 +1,81 @@
+# models/sales/sales.yml
+
+models:
+  - name: sales_weekly_report
+    description: "Provides a weekly aggregated report of sales performance, including order counts, sales amounts by status, and average order value."
+    columns:
+      - name: order_week
+        description: "The starting date (YYYY-MM-DD) of the week for which the sales data is reported."
+        tests:
+          - not_null
+      - name: orders_count
+        description: "The total number of unique orders in this week."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: shipped_sales_amount
+        description: "The total sales amount for orders with 'Shipped' status in this week."
+        tests:
+          - not_null
+          
+      - name: complete_sales_amount
+        description: "The total sales amount for orders with 'Complete' status in this week."
+        tests:
+          - not_null
+          
+      - name: returned_sales_amount
+        description: "The total sales amount for orders with 'Returned' status in this week."
+        tests:
+          - not_null
+          
+      - name: cancelled_sales_amount
+        description: "The total sales amount for orders with 'Cancelled' status in this week."
+        tests:
+          - not_null
+          
+      - name: processing_sales_amount
+        description: "The total sales amount for orders with 'Processing' status in this week."
+        tests:
+          - not_null
+          
+      - name: shipped_orders_count
+        description: "The count of unique orders with 'Shipped' status in this week."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: complete_orders_count
+        description: "The count of unique orders with 'Complete' status in this week."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: returned_orders_count
+        description: "The count of unique orders with 'Returned' status in this week."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: cancelled_orders_count
+        description: "The count of unique orders with 'Cancelled' status in this week."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: processing_orders_count
+        description: "The count of unique orders with 'Processing' status in this week."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: total_sales_amount
+        description: "The total sales amount across all orders in this week."
+        tests:
+          - not_null
+          
+      - name: average_order_value
+        description: "The average value of an order in this week (total_sales_amount / orders_count)."
+        tests:
+          - not_null
+          

@@ -1,0 +1,44 @@
+# models/sales/sales.yml
+
+models:
+  - name: total_sales
+    description: "Calculates total items sold, total sales amount, and total profit per product."
+    columns:
+      - name: product_id
+        description: "Unique identifier for the product."
+        tests:
+          - not_null
+      - name: category
+        description: "Category of the product."
+        tests:
+          - not_null
+      - name: department
+        description: "Department the product belongs to."
+          # If you want to add a test for specific values, uncomment and adjust this:
+          # tests:
+          #   - dbt_expectations.expect_column_distinct_values_to_be_in_set:
+          #       value_set: ["Men's", "Women's", "Kids'"]
+      - name: brand
+        description: "Brand of the product."
+        tests:
+          - not_null
+      - name: product_name
+        description: "Name of the product."
+        tests:
+          - not_null
+      - name: items_sold
+        description: "Total number of units of this product sold."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: total_sales
+        description: "Total revenue generated from this product."
+        tests:
+          - not_null
+          
+      - name: total_profit
+        description: "Total profit generated from this product (total_sales - total_cost)."
+        tests:
+          - not_null
+          
