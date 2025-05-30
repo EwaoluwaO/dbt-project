@@ -1,0 +1,42 @@
+# models/marketing/marketing.yml
+
+models:
+  - name: Traffic_Source_activity
+    description: "Aggregates key marketing metrics (page views, cart additions, purchases, cancellations) by event day and traffic source, derived from the Campaign_Analysis model."
+    columns:
+      - name: event_day
+        description: "The date (YYYY-MM-DD) of the activity."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: DATE
+      - name: traffic_source
+        description: "The source from which the user arrived (e.g., 'Organic', 'Paid Search')."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING 
+      - name: page_views
+        description: "Total page views from the specified traffic source on that day."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: cart_adds
+        description: "Total cart additions from the specified traffic source on that day."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: purchases
+        description: "Total purchases from the specified traffic source on that day."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64
+      - name: cancels
+        description: "Total cancellations from the specified traffic source on that day."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64

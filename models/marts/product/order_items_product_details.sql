@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+) }}
+
 SELECT
     oi.order_id,
     oi.product_id,
@@ -10,5 +14,5 @@ SELECT
     p.brand,
     p.retail_price
 FROM
-    {{ source('thelook_ecommerce', 'order_items') }} oi  
-    JOIN {{ source('thelook_ecommerce', 'products') }} p ON oi.product_id = p.id
+    {{ ref("stg_order_items") }} oi  
+    JOIN {{ ref("stg_products") }} p ON oi.product_id = p.id

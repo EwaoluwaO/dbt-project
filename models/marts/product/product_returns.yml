@@ -1,0 +1,39 @@
+# models/product/product.yml
+
+models:
+  - name: product_returns
+    description: "Calculates the total quantity ordered, total quantity returned, and the return rate for each product on a given order date from TheLook eCommerce dataset."
+    columns:
+      - name: product_id
+        description: "Unique identifier for the product."
+        tests:
+          - not_null
+      - name: product_name
+        description: "Name of the product."
+        tests:
+          - not_null
+      - name: order_date
+        description: "The date on which the product was ordered."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: DATE 
+      - name: total_quantity_ordered
+        description: "The total number of units of the product ordered on that date."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: total_quantity_returned
+        description: "The total number of units of the product returned on that date."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: return_rate
+        description: "The calculated return rate for the product on that order date (total_quantity_returned / total_quantity_ordered)."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0.0
+              max_value: 1.0

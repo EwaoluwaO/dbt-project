@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+) }}
+
 WITH
   UserFirstOrderMonth AS (
     -- Determine the first order month for each user
@@ -5,7 +9,7 @@ WITH
       user_id,
       DATE_TRUNC( MIN(created_at), MONTH) AS first_order_month
     FROM
-      {{ source('thelook_ecommerce', 'orders') }}
+      {{ ref('stg_orders') }}
     GROUP BY
       user_id
   ),
@@ -16,7 +20,7 @@ WITH
       order_id,
       ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at) AS order_number
     FROM
-      {{ source('thelook_ecommerce', 'orders') }}
+      {{ ref('stg_orders') }}
   ),
   CohortOrderNumbers AS (
     -- Join the first order month with the order number for each order

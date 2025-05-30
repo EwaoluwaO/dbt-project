@@ -1,0 +1,35 @@
+models:
+  - name: cohort_order_freq
+    description: "Analyzes the frequency of orders within customer cohorts, categorizing users by their total order count."
+    columns:
+      - name: first_order_month
+        description: "The month (YYYY-MM-DD) of the user's first order, defining the cohort."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: TIMESTAMP
+      - name: total_orders
+        description: "The total number of orders made by a user within a cohort."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: user_count
+        description: "The number of users in the cohort who made the specified total number of orders."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: cohort_size
+        description: "The total number of users in the respective `first_order_month` cohort."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: returning_user_count
+        description: "The number of users who made more than one order in a specific `total_orders` group within their cohort."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+

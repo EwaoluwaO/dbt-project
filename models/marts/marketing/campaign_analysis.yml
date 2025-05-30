@@ -1,0 +1,90 @@
+models:
+  - name: Campaign_Analysis
+    description: "Aggregates user event data to analyze session-level activity, including page views, purchases, cart additions, and cancellations for marketing campaign analysis."
+    columns:
+      - name: session_id
+        description: "Unique identifier for the user session."
+        tests:
+          - not_null
+          - unique
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+      - name: user_id
+        description: "Unique identifier for the user."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 # Or STRING, depending on your actual user_id type
+      - name: visit_started_at
+        description: "Timestamp of the first event in the session (start of visit)."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: TIMESTAMP
+      - name: visit_ended_at
+        description: "Timestamp of the last event in the session (end of visit)."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: TIMESTAMP
+      - name: traffic_source
+        description: "The source from which the user arrived at the site (e.g., 'Organic', 'Paid Search', 'Email')."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+      - name: browser
+        description: "The browser used by the user during the session."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+      - name: ip_address
+        description: "The IP address associated with the session."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+      - name: city
+        description: "The city from which the user accessed the site."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING 
+      - name: state
+        description: "The state from which the user accessed the site."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+      - name: postal_code
+        description: "The postal code from which the user accessed the site."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: STRING
+      - name: sequences
+        description: "The total number of events recorded in the session."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: purchases
+        description: "Count of 'purchase' events within the session."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64
+      - name: cart_adds
+        description: "Count of 'cart' events within the session."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64
+      - name: page_views
+        description: "Count of 'product', 'department', or 'home' page view events within the session."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64
+      - name: cancels
+        description: "Count of 'cancel' events within the session."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64

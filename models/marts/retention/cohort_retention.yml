@@ -1,0 +1,35 @@
+models:
+  - name: cohort_retention
+    description: "Calculates monthly customer retention rates for cohorts based on their first purchase month."
+    columns:
+      - name: cohort_month
+        description: "The month (YYYY-MM-DD) of the user's first purchase, defining the cohort."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: TIMESTAMP
+      - name: order_month
+        description: "The month (YYYY-MM-DD) being analyzed for activity relative to the cohort's first purchase month."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: TIMESTAMP 
+      - name: initial_users
+        description: "The total number of users in the `cohort_month` at the time of their first order."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: active_users
+        description: "The number of unique users from the `cohort_month` who made at least one order in the `order_month`."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: retention_rate
+        description: "The calculated retention rate for the cohort in the given `order_month` (active_users / initial_users)."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0.0
+              max_value: 100.0

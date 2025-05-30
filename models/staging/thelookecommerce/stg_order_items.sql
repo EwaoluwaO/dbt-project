@@ -1,3 +1,7 @@
+{{ config(
+    materialized='view'
+) }}
+
 SELECT
     id AS order_item_id,  -- Rename
     order_id,
@@ -7,4 +11,4 @@ SELECT
     returned_at,
     sale_price
 FROM
-    bigquery-public-data.thelook_ecommerce.order_items
+    {{ source('thelook_ecommerce', 'order_items') }}

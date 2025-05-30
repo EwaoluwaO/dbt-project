@@ -1,0 +1,40 @@
+# models/retention/retention.yml
+
+models:
+  - name: order_frequency_funnel
+    description: "Tracks the customer order frequency funnel, showing how many users from each cohort made their 1st, 2nd, 3rd, etc., purchase."
+    columns:
+      - name: first_order_month
+        description: "The month (YYYY-MM-DD) of the user's first order, defining the cohort."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: TIMESTAMP 
+      - name: order_number
+        description: "The sequential number of the purchase (e.g., 1 for first purchase, 2 for second)."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: user_count
+        description: "The number of unique users from the cohort who made this specific `order_number`."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+      - name: cohort_size
+        description: "The total number of users in the `first_order_month` cohort (i.e., those who made at least 1 purchase)."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: INT64 
+
+      - name: retention_rate
+        description: "The percentage of the original cohort that made this `order_number` (user_count / cohort_size)."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0.0
+              max_value: 100.0
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: FLOAT64 

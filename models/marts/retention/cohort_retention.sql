@@ -1,9 +1,14 @@
+{{ config(
+    materialized='table'
+) }}
+
+
 -- creating a dimension table with each user's first order date
 with first_purchase as (
   select
   user_id,
   min(date_trunc(created_at, MONTH )) as cohort_month
-from {{ source('thelook_ecommerce', 'orders') }}
+from {{ ref('stg_orders') }}
 group by 
   user_id),
 -- joiuning the first order table to the order table and truncating the order date to just the month
@@ -13,7 +18,7 @@ user_orders AS (
       DATE_TRUNC(o.created_at, MONTH) AS order_month,
       fp.cohort_month
     FROM
-      {{ source('thelook_ecommerce', 'orders') }} o
+      {{ ref('stg_orders') }} o
       JOIN first_purchase fp ON o.user_id = fp.user_id
   ),
 --counting the orders for each cohort each month
