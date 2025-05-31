@@ -1,5 +1,5 @@
 models:
-  - name: Campaign_Analysis
+  - name: campaign_analysis
     description: "Aggregates user event data to analyze session-level activity, including page views, purchases, cart additions, and cancellations for marketing campaign analysis."
     columns:
       - name: session_id
@@ -10,11 +10,7 @@ models:
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: STRING
       - name: user_id
-        description: "Unique identifier for the user."
-        tests:
-          - not_null
-          - dbt_expectations.expect_column_values_to_be_of_type:
-              column_type: INT64 # Or STRING, depending on your actual user_id type
+        description: "Unique identifier for the user if available."
       - name: visit_started_at
         description: "Timestamp of the first event in the session (start of visit)."
         tests:

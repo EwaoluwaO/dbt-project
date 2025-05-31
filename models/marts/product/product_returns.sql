@@ -6,17 +6,17 @@ with
     product_orders as (
         select
             oi.product_id,
-            p.name as product_name,
+            p.product_name,
             date(o.created_at) as order_date,
             count(*) as quantity_ordered,
             sum(case when oi.status = 'Returned' then 1 else 0 end) as quantity_returned
         from {{ ref('stg_order_items') }} oi
         join {{ ref('stg_orders') }} o on oi.order_id = o.order_id
         join {{ ref('stg_products') }} p on oi.product_id = p.id
-        group by oi.product_id, p.name, date(o.created_at)
+        group by oi.product_id, p.product_name, date(o.created_at)
     )
 select
-    order_date
+    order_date,
     product_id,
     product_name,
     sum(quantity_ordered) as total_quantity_ordered,
