@@ -9,6 +9,6 @@ select
     sum(c.cart_adds) as cart_adds,
     sum(c.purchases) as purchases,
     sum(c.cancels) as cancels
-from {{ ref("Campaign_Analysis") }} c
+from {{ ref("campaign_analysis") }} c
 group by event_day, c.traffic_source
 order by event_day desc, purchases desc

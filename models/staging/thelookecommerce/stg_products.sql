@@ -7,7 +7,7 @@ SELECT
     cost,
     category,
     COALESCE(name, 'Unknown Product Name') AS product_name, -- This is the fix for a null product name
-    brand,
+    COALESCE(brand, 'Unknown Brand Name') AS brand, -- This is the fix for a null product name
     retail_price,
     department,
     sku,

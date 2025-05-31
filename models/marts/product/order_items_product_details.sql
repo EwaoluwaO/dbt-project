@@ -9,7 +9,7 @@ SELECT
     oi.status,
     oi.returned_at,
     oi.sale_price,
-    p.name,
+    p.product_name,
     p.category,
     p.brand,
     p.retail_price
